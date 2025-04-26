@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Create ECS Cluster
 #resource "aws_ecs_cluster" "cluster" {
   #name = "web-app"
@@ -172,15 +173,26 @@ data "aws_route53_zone" "selected" {
   private_zone = false
 }
 
+=======
+# Create ECS Cluster
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
 resource "aws_ecs_cluster" "cluster" {
   name = "web-app"
 }
 
+<<<<<<< HEAD
+=======
+# Create CloudWatch Log Group for ECS
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
 resource "aws_cloudwatch_log_group" "ecs_log_group" {
   name              = "/ecs/frontend/"
   retention_in_days = 7
 }
 
+<<<<<<< HEAD
+=======
+# ECS Task Definition
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
 resource "aws_ecs_task_definition" "task" {
   family = "webapp-task"
   container_definitions = jsonencode([
@@ -190,6 +202,10 @@ resource "aws_ecs_task_definition" "task" {
       cpu       = 1024
       memory    = 3072
       essential = true
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
       portMappings = [
         {
           containerPort = 80
@@ -197,6 +213,10 @@ resource "aws_ecs_task_definition" "task" {
           protocol      = "tcp"
         }
       ]
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
       environment = [
         /*{ name = "ENV_VAR_1", value = "value1" },
         { name = "ENV_VAR_2", value = "value2" } */
@@ -218,57 +238,100 @@ resource "aws_ecs_task_definition" "task" {
   memory                   = "3072"
 }
 
+<<<<<<< HEAD
 resource "aws_security_group" "alb_sg" {
   name        = "alb-sg"
   description = "Allow HTTP/HTTPS traffic for the ALB"
   vpc_id      = "vpc-29f0c052" 
   
+=======
+
+# Security group for the load balancer
+resource "aws_security_group" "alb_sg" {
+  name        = "alb-sg"
+  description = "Allow HTTP/HTTPS traffic for the ALB"
+  vpc_id      = "vpc-29f0c052" # Replace with your VPC ID
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
   tags = {
     Name = "alb-sg"
   }
 }
 
+<<<<<<< HEAD
+=======
+# Application Load Balancer
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
 resource "aws_lb" "alb" {
   name               = "web-app-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
+<<<<<<< HEAD
   subnets            = ["subnet-3a4cc635", "subnet-ba203d85"] 
   enable_deletion_protection = false
   
+=======
+  subnets            = ["subnet-3a4cc635", "subnet-ba203d85"] # Replace with your Subnet IDs
+
+  enable_deletion_protection = false
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
   tags = {
     Name = "web-app-alb"
   }
 }
 
+<<<<<<< HEAD
+=======
+# Target Group 
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
 resource "aws_lb_target_group" "tg" {
   name        = "web-app-tg"
   port        = 80
   protocol    = "HTTP"
+<<<<<<< HEAD
   vpc_id      = "vpc-29f0c052" 
   target_type = "ip"
   
+=======
+  vpc_id      = "vpc-29f0c052" # Replace with your VPC ID
+  target_type = "ip"
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
   health_check {
     path                = "/"
     interval            = 30
@@ -277,16 +340,25 @@ resource "aws_lb_target_group" "tg" {
     unhealthy_threshold = 2
     matcher             = "200"
   }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
   tags = {
     Name = "web-app-tg"
   }
 }
 
+<<<<<<< HEAD
+=======
+# Listener for HTTP traffic
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
 resource "aws_lb_listener" "http_listener" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
+<<<<<<< HEAD
   
   default_action {
     type = "redirect"
@@ -306,18 +378,26 @@ resource "aws_lb_listener" "https_listener" {
   ssl_policy        = "ELBSecurityPolicy-2016-08"
   certificate_arn   = data.aws_acm_certificate.existing.arn
   
+=======
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.tg.arn
   }
 }
 
+<<<<<<< HEAD
+=======
+# ECS Service with Load Balancer Configuration
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
 resource "aws_ecs_service" "service" {
   name            = "web-service"
   cluster         = aws_ecs_cluster.cluster.arn
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 0
   launch_type     = "FARGATE"
+<<<<<<< HEAD
   
   network_configuration {
     subnets          = ["subnet-3a4cc635", "subnet-ba203d85"] 
@@ -349,3 +429,24 @@ resource "aws_route53_record" "alb" {
     evaluate_target_health = true
   }
 }
+=======
+
+  network_configuration {
+    subnets          = ["subnet-3a4cc635", "subnet-ba203d85"] # Replace with your Subnet IDs
+    security_groups  = [aws_security_group.ecs_service_sg.id]
+    assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.tg.arn
+    container_name   = "frontend" # Replace with your container name
+    container_port   = 80         # Replace with the port your app listens on
+  }
+
+  depends_on = [
+    aws_iam_policy_attachment.ecs_task_execution_attachment,
+    aws_lb_listener.http_listener
+  ]
+}
+
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2

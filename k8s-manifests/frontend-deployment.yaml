@@ -21,6 +21,7 @@ spec:
         env:
         - name: BACKEND_URL
           value: "http://backend-service.dev.svc.cluster.local:5000"
+<<<<<<< HEAD
           #value: "https://api.dev.holadmexbobpro.online" 
         resources:
           requests:
@@ -29,3 +30,41 @@ spec:
           #limits:
             #memory: "2Mi"
             #cpu: "1"
+=======
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: frontend-logs
+          mountPath: /var/log/nginx
+      - name: filebeat
+        image: docker.elastic.co/beats/filebeat:8.11.1
+        args: ["-c", "/usr/share/filebeat/filebeat.yml", "-e"]
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: ELASTIC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: elasticsearch-credentials
+              key: password
+        volumeMounts:
+        - name: frontend-logs
+          mountPath: /var/log/nginx
+        - name: filebeat-config
+          mountPath: /usr/share/filebeat/filebeat.yml
+          subPath: filebeat.yml
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "300m"
+      volumes:
+      - name: frontend-logs
+        emptyDir: {}
+      - name: filebeat-config
+        configMap:
+          name: filebeat-frontend-config
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2

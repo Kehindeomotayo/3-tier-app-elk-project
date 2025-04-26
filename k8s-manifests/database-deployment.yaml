@@ -36,11 +36,19 @@ spec:
         - mountPath: /var/lib/postgresql/data
           name: db-storage
       volumes:
+<<<<<<< HEAD
       - name: db-storage
         persistentVolumeClaim:
           claimName: db-pvc
         #- name: db-storage
           #emptyDir: {}
+=======
+        #- name: db-storage
+        #persistentVolumeClaim:
+        #claimName: db-pvc
+      - name: db-storage
+        emptyDir: {}
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
 
         
 

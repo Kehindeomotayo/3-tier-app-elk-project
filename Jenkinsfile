@@ -85,6 +85,7 @@ pipeline {
                 }
             }
         }
+<<<<<<< HEAD
 
         stage('Install jq') {
             steps {
@@ -100,6 +101,8 @@ pipeline {
             }
         }
     }
+=======
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
         stage('Update ECS Service') {
             steps {
                 script {
@@ -150,6 +153,10 @@ pipeline {
             cleanWs()
         }
     }
+<<<<<<< HEAD
 
+=======
+}
+>>>>>>> 45e8187e96b4861ef302eccb3bf70626916f00f2
 
 
